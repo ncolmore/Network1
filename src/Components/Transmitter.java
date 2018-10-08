@@ -27,14 +27,15 @@ public class Transmitter {
     private int lambda;
     private Random generator;
     private ArrayList<Double> uValues;
-    private ArrayList<Double> xValues;
-
+    private ArrayList<Double> xValuesMicroSeconds;
+    private ArrayList<Double> xValuesSeconds;
     public Transmitter(){
     setBackoffTime(0);
     setCollisions(0);
     setTransmitFrame(false);
     uValues=new ArrayList<>();
-    xValues=new ArrayList<>();
+    xValuesMicroSeconds=new ArrayList<>();
+    xValuesSeconds=new ArrayList<>();
     generator=new Random();
     }
     public int getBackoffTime() {
@@ -77,8 +78,12 @@ public class Transmitter {
         return uValues;
     }
 
-    public ArrayList<Double> getxValues() {
-        return xValues;
+    public ArrayList<Double> getxValuesMicroSeconds() {
+        return xValuesMicroSeconds;
+    }
+
+    public ArrayList<Double> getxValuesSeconds() {
+        return xValuesSeconds;
     }
 
     public void generateUValues(){
@@ -94,9 +99,10 @@ public class Transmitter {
         float modifier;
         for(int i=0;i<500;i++){
             tempDouble=(1-(getuValues().get(i)));
-            modifier=(float)1/(float)lambda;
+            modifier=(float)-1/(float)lambda;
             tempDouble=modifier*log(tempDouble);
-            xValues.add(tempDouble);
+            xValuesMicroSeconds.add(tempDouble);
+            xValuesSeconds.add(tempDouble*1000000);
         }
 
 
