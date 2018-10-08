@@ -15,4 +15,13 @@ public class Receiver {
     private static final int lambda2=100000000;//frames/microsecond
     private static final int lambda3=200000000;//frames/microsecond
     private static final int lambda4=300000000;//frames/microsecond
+    private int lambda;
+    public int getLambda() {
+        return lambda;
+    }
+
+    public void setLambda(int lambda) {
+        this.lambda = lambda;
+    }
+
 }
