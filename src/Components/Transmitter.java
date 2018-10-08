@@ -1,6 +1,7 @@
 package Components;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Random;
 
 import static java.lang.Math.log;
@@ -89,7 +90,7 @@ public class Transmitter {
     }
 
     public void generateUValues(){
-        for(int i=0;i<500;i++){
+        for(int i=0;i<50000;i++){
             uValues.add(generator.nextDouble());
             }
 
@@ -99,7 +100,7 @@ public class Transmitter {
     public void generateXValues(){ //the x values this returns are in microseconds
         double tempDouble;
         float modifier;
-        for(int i=0;i<500;i++){
+        for(int i=0;i<50000;i++){
             tempDouble=(1-(getuValues().get(i)));
             modifier=(float)-1/(float)lambda;
             tempDouble=modifier*log(tempDouble);
@@ -114,6 +115,17 @@ public class Transmitter {
     public void generateTrafficSlots(){
         for(int i=0;i<xValuesSeconds.size();i++){
             trafficSlots.add((int) Math.ceil(xValuesSeconds.get(i)/(2e-5)));
+        
+
+        }
+        for(int i=0;i<xValuesSeconds.size();i++){
+            if(i==0){
+                //does nothing for the first portion
+            }
+            else{
+                trafficSlots.set(i,trafficSlots.get(i)+trafficSlots.get(i-1));
+            }
+
         }
     }
 
