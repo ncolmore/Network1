@@ -16,6 +16,7 @@ public class Transmitter {
     public static final int  transmitRate=750000; //bytes/sec
     public static final int CWMax=1024;//slots
     public static final int CW0=4;
+    private int CWCurrent;
     public static final int simulationTime=10000000;//microseconds
     private static final int lambda1=50000000;//frames/microsecond
     private static final int lambda2=100000000;//frames/microsecond
@@ -25,6 +26,7 @@ public class Transmitter {
     private static final int DIFS=40;//expressed in microseconds
     private boolean transmitFrame;
     private int collisions;
+    private int transmissions;
     private int lambda;
     private Random generator;
     private ArrayList<Double> uValues;
@@ -40,6 +42,7 @@ public class Transmitter {
     xValuesSeconds=new ArrayList<>();
     trafficSlots=new ArrayList<>();
     generator=new Random();
+    CWCurrent=CW0;
     }
     public int getBackoffTime() {
         return backoffTime;
@@ -115,7 +118,7 @@ public class Transmitter {
     public void generateTrafficSlots(){
         for(int i=0;i<xValuesSeconds.size();i++){
             trafficSlots.add((int) Math.ceil(xValuesSeconds.get(i)/(2e-5)));
-        
+
 
         }
         for(int i=0;i<xValuesSeconds.size();i++){
@@ -147,5 +150,35 @@ public class Transmitter {
 
     public ArrayList<Integer> getTrafficSlots() {
         return trafficSlots;
+    }
+
+    public int getTransmissions() {
+        return transmissions;
+    }
+
+    public void setTransmissions(int transmissions) {
+        this.transmissions = transmissions;
+    }
+
+    public int getCWCurrent() {
+        return CWCurrent;
+    }
+
+    public void setCWCurrent(int CWCurrent) {
+        this.CWCurrent = CWCurrent;
+    }
+
+    public void doubleCW(){
+        CWCurrent=CWCurrent*2;
+    }
+    public void resetCW(){
+        CWCurrent=CW0;
+    }
+
+    public void generateBackoffTime(){
+        Random r = new Random();
+        int Low = 0;
+        int High = CWCurrent-1;
+        backoffTime = r.nextInt(High-Low) + Low;
     }
 }
