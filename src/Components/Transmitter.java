@@ -29,6 +29,7 @@ public class Transmitter {
     private ArrayList<Double> uValues;
     private ArrayList<Double> xValuesMicroSeconds;
     private ArrayList<Double> xValuesSeconds;
+    private ArrayList<Integer> trafficSlots;
     public Transmitter(){
     setBackoffTime(0);
     setCollisions(0);
@@ -36,6 +37,7 @@ public class Transmitter {
     uValues=new ArrayList<>();
     xValuesMicroSeconds=new ArrayList<>();
     xValuesSeconds=new ArrayList<>();
+    trafficSlots=new ArrayList<>();
     generator=new Random();
     }
     public int getBackoffTime() {
@@ -109,6 +111,12 @@ public class Transmitter {
 
     }
 
+    public void generateTrafficSlots(){
+        for(int i=0;i<xValuesSeconds.size();i++){
+            trafficSlots.add((int) Math.ceil(xValuesSeconds.get(i)/(2e-5)));
+        }
+    }
+
     public static int getLambda1() {
         return lambda1;
     }
@@ -123,5 +131,9 @@ public class Transmitter {
 
     public static int getLambda4() {
         return lambda4;
+    }
+
+    public ArrayList<Integer> getTrafficSlots() {
+        return trafficSlots;
     }
 }

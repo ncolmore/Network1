@@ -13,11 +13,11 @@ public class CSMAwithCollisionAvoidance {
         t1.setLambda(Transmitter.getLambda1());
         t1.generateUValues();
         t1.generateXValues();
+        t1.generateTrafficSlots();
         xValues=t1.getxValuesMicroSeconds();
         xValues2=t1.getxValuesSeconds();
         for(int i=0;i<xValues.size();i++){
-            System.out.println(xValues.get(i));
-            System.out.println(xValues2.get(i));
+           System.out.println(t1.getTrafficSlots().get(i));
         }
     }
 }
