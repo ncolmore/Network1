@@ -7,27 +7,26 @@ import java.util.Random;
 import static java.lang.Math.log;
 
 public class Transmitter {
-    public static final int dataFrameSize=1500;//expressed in bytes
-    public static final int slotDuration=20;//expressed in microseconds
-    public static final int SIFSDuration=10;//microseconds
-    public static final int ACK=30; //bytes
-    public static final int RTS=30;//bytes
-    public static final int CTS=30;//bytes
-    public static final int  transmitRate=750000; //bytes/sec
+    public static final int dataFrameSize=100;//slots
+    public static final int SIFSDuration=1;//slot
+    public static final int ACK=2; //dlots
+    public static final int RTS=2;//slots
+    public static final int CTS=2;//slots
     public static final int CWMax=1024;//slots
     public static final int CW0=4;
+    public static final int transmissionTotal=ACK+SIFSDuration+dataFrameSize;//slots  total amount of slots used during successful transmission
     private int CWCurrent;
-    public static final int simulationTime=10000000;//microseconds
+    public int backoffPlusDIFS;
     private static final int lambda1=50000000;//frames/microsecond
     private static final int lambda2=100000000;//frames/microsecond
     private static final int lambda3=200000000;//frames/microsecond
     private static final int lambda4=300000000;//frames/microsecond
-    private int backoffTime;//expressed in microseconds
-    private static final int DIFS=40;//expressed in microseconds
-    private boolean transmitFrame;
+    private int backoffTime=0;//slots
+    private static final int DIFS=2;//slots
     private int collisions;
     private int transmissions;
     private int lambda;
+    private boolean ack;
     private Random generator;
     private ArrayList<Double> uValues;
     private ArrayList<Double> xValuesMicroSeconds;
@@ -36,7 +35,6 @@ public class Transmitter {
     public Transmitter(){
     setBackoffTime(0);
     setCollisions(0);
-    setTransmitFrame(false);
     uValues=new ArrayList<>();
     xValuesMicroSeconds=new ArrayList<>();
     xValuesSeconds=new ArrayList<>();
@@ -56,13 +54,7 @@ public class Transmitter {
         return DIFS;
     }
 
-    public boolean isTransmitFrame() {
-        return transmitFrame;
-    }
 
-    public void setTransmitFrame(boolean transmitFrame) {
-        this.transmitFrame = transmitFrame;
-    }
 
     public int getCollisions() {
         return collisions;
@@ -180,5 +172,22 @@ public class Transmitter {
         int Low = 0;
         int High = CWCurrent-1;
         backoffTime = r.nextInt(High-Low) + Low;
+        backoffPlusDIFS=backoffTime+DIFS;
+    }
+
+    public boolean isAck() {
+        return ack;
+    }
+
+    public void setAck(boolean ack) {
+        this.ack = ack;
+    }
+
+    public static int getTransmissionTotal() {
+        return transmissionTotal;
+    }
+
+    public static int getCWMax() {
+        return CWMax;
     }
 }
