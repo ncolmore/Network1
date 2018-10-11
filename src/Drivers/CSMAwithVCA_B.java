@@ -29,6 +29,7 @@ public class CSMAwithVCA_B {
         t1.generateTrafficSlots();
         t2.generateTrafficSlots();
         int first=getFirstPacket(t1,t2);
+
         if(first==0){
             globalClock=t1.getTrafficSlots().get(0);
         }
