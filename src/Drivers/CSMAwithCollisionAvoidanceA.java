@@ -11,8 +11,6 @@ public class CSMAwithCollisionAvoidanceA {
         int simulationTime=500000;//slots
         int t1index=0;
         int t2index=0;
-        ArrayList <Double> xValues=new ArrayList<>();
-        ArrayList <Double> xValues2=new ArrayList<>();
         Transmitter t1=new Transmitter();
         Transmitter t2=new Transmitter();
         t1.setLambda(Transmitter.getLambda1());//change lambdas here
@@ -23,14 +21,8 @@ public class CSMAwithCollisionAvoidanceA {
         t2.generateXValues();
         t1.generateTrafficSlots();
         t2.generateTrafficSlots();
-        xValues=t1.getxValuesMicroSeconds();
-        xValues2=t2.getxValuesMicroSeconds();
-        for(int i=0;i<xValues.size();i++){
-          //  System.out.println("T1 "+i);
-          // System.out.println(t1.getTrafficSlots().get(i));
-          //  System.out.println("T2 "+i);
-           // System.out.println(t2.getTrafficSlots().get(i));
-        }
+
+
 
         int first=getFirstPacket(t1,t2);
         if(first==0){
@@ -46,10 +38,10 @@ public class CSMAwithCollisionAvoidanceA {
                 if(t1.backoffPlusDIFS < t2.backoffPlusDIFS){
                    scenario=0;
                 }
-                if(t1.backoffPlusDIFS > t2.backoffPlusDIFS){
+               else if(t1.backoffPlusDIFS > t2.backoffPlusDIFS){
                     scenario=1;
                 }
-                if(t1.backoffPlusDIFS == t2.backoffPlusDIFS){
+                else if(t1.backoffPlusDIFS == t2.backoffPlusDIFS){
                     scenario=2;
                 }
                 switch(scenario) {
@@ -91,16 +83,17 @@ public class CSMAwithCollisionAvoidanceA {
                         continue;
 
                 }
+                continue;
             }
             //a<=clock b>clock
-            if(t1.getTrafficSlots().get(t1index)<= globalClock && t2.getTrafficSlots().get(t2index)>globalClock){
+            else if(t1.getTrafficSlots().get(t1index)<= globalClock && t2.getTrafficSlots().get(t2index)>globalClock){
                 if(globalClock+t1.backoffPlusDIFS < t2.getTrafficSlots().get(t2index)+t2.backoffPlusDIFS){ //t1 transmits
                     scenario=0;
                 }
-                if(globalClock+t1.backoffPlusDIFS > t2.getTrafficSlots().get(t2index)+t2.backoffPlusDIFS){ //t2 transmits
+                else  if(globalClock+t1.backoffPlusDIFS > t2.getTrafficSlots().get(t2index)+t2.backoffPlusDIFS){ //t2 transmits
                     scenario=1;
                 }
-                if(globalClock+t1.backoffPlusDIFS == t2.getTrafficSlots().get(t2index)+t2.backoffPlusDIFS){ //collision
+                else if(globalClock+t1.backoffPlusDIFS == t2.getTrafficSlots().get(t2index)+t2.backoffPlusDIFS){ //collision
                     scenario=2;
                 }
                 switch(scenario) {
@@ -142,9 +135,10 @@ public class CSMAwithCollisionAvoidanceA {
                         continue;
 
                 }
+                continue;
             }
             //a>clock b<=clock
-            if(t1.getTrafficSlots().get(t1index)> globalClock && t2.getTrafficSlots().get(t2index)<=globalClock){
+         else if(t1.getTrafficSlots().get(t1index)> globalClock && t2.getTrafficSlots().get(t2index)<=globalClock){
                 if(t1.getTrafficSlots().get(t1index)+t1.backoffPlusDIFS < globalClock+t2.backoffPlusDIFS){ //t1 transmits
                     scenario=0;
                 }
@@ -193,9 +187,10 @@ public class CSMAwithCollisionAvoidanceA {
                         continue;
 
                 }
+                continue;
             }
             //a>clock b>clock
-            if(t1.getTrafficSlots().get(t1index)> globalClock && t2.getTrafficSlots().get(t2index)>globalClock){ //both greater than clock
+          else if(t1.getTrafficSlots().get(t1index)> globalClock && t2.getTrafficSlots().get(t2index)>globalClock){ //both greater than clock
                 //find lowest slot # and forward globalClock
                 if(t1.getTrafficSlots().get(t1index)<t2.getTrafficSlots().get(t2index)){
                     globalClock=t1.getTrafficSlots().get(t1index);
@@ -203,6 +198,7 @@ public class CSMAwithCollisionAvoidanceA {
                 else{
                     globalClock=t2.getTrafficSlots().get(t2index);
                 }
+                continue;
             }
 
         }

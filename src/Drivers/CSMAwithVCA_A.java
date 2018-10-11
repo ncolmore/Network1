@@ -2,10 +2,7 @@ package Drivers;
 
 import Components.Transmitter;
 
-import java.io.IOException;
-import java.util.ArrayList;
-
-public class CSMAwithCollisionAvoidanceA {
+public class CSMAwithVCA_A {
     public static void main(String[] args)  {
         int globalClock=0;
         int simulationTime=500000;//slots

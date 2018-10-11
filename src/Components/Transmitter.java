@@ -14,6 +14,8 @@ public class Transmitter {
     public static final int CTS=2;//slots
     public static final int CWMax=1024;//slots
     public static final int CW0=4;
+    private static final int DIFS=2;//slots
+    public static int handshake=RTS+DIFS+SIFSDuration+CTS;
     public static final int transmissionTotal=ACK+SIFSDuration+dataFrameSize;//slots  total amount of slots used during successful transmission
     private int CWCurrent;
     public int backoffPlusDIFS;
@@ -22,7 +24,7 @@ public class Transmitter {
     private static final int lambda3=200000000;//frames/microsecond
     private static final int lambda4=300000000;//frames/microsecond
     private int backoffTime=0;//slots
-    private static final int DIFS=2;//slots
+
     private int collisions;
     private int transmissions;
     private int lambda;
@@ -40,6 +42,8 @@ public class Transmitter {
     xValuesSeconds=new ArrayList<>();
     trafficSlots=new ArrayList<>();
     generator=new Random();
+    setTransmissions(0);
+    setCollisions(0);
     CWCurrent=CW0;
     }
     public int getBackoffTime() {
@@ -190,4 +194,5 @@ public class Transmitter {
     public static int getCWMax() {
         return CWMax;
     }
+
 }
